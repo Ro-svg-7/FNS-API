@@ -1,4 +1,5 @@
 import tkinter as tk
+from nutrition_api import get_nutrition_info
 
 root = tk.Tk()
 root.title("Food Nutrition")
@@ -9,10 +10,11 @@ status_text = tk.StringVar()
 status_text.set("Please enter a food name to get nutrition data.")
 
 def change_ui():
+    status_text.set("Fetching nutrition data for: " + food_name.get().strip())
     if get_metrics() == False:
         return
     
-    status_text.set("Showing nutrition data for: " + food_name.get())
+    status_text.set("Showing nutrition data for: " + food_name.get().strip())
     root.geometry("750x650")
     input_frame.pack_forget()
     search_button.pack_forget()
@@ -28,26 +30,28 @@ def change_ui_back():
     redo_button.pack_forget()
 
 def get_metrics():
-    food = food_name.get().lower()
+    food_item = food_name.get().strip()
 
-    if food == "banana":
-        data_label.config(text="NUTRITION DATA: \n"
-        "- Calories: 105\n" 
-        "- Carbohydrates: 27g\n"
-        "- Protein: 1.3g\n"
-        "- Fat: 0.4g\n")
-    elif food == "apple":
-        data_label.config(text="NUTRITION DATA: \n"
-        "- Calories: 95\n" 
-        "- Carbohydrates: 25g\n"
-        "- Protein: 0.5g\n"
-        "- Fat: 0.3g\n")
+    if not food_item:
+        status_text.set("Please enter a food name.")
+        status_label.config(fg="red")
+        return False
+
+    nutrition_info = get_nutrition_info(food_item)
+    if nutrition_info is not None:
+        data_label.config(
+            text=f"NUTRITION DATA: \n"
+              f"Calories: {nutrition_info['calories']} kcal\n"
+              f"Carbohydrates: {nutrition_info['carbohydrates']} g\n"
+              f"Protein: {nutrition_info['protein']} g\n"
+              f"Fat: {nutrition_info['fat']} g"
+              )
+        return True
     else:
         status_text.set("Food not found. Please enter a valid food name.")
         status_label.config(fg="red")
         return False
     
-
 title_label = tk.Label(
     root,
     text="Know Your Food Nutrition",
