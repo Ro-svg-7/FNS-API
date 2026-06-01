@@ -32,6 +32,7 @@ def get_nutrition_info(food_item):
     fat = None
     carbohydrates = None
     protein = None
+    sugars=None
 
     for nutrient in nut_data["foodNutrients"]:
         name = nutrient["nutrient"]["name"]
@@ -44,10 +45,13 @@ def get_nutrition_info(food_item):
             carbohydrates = amount
         elif name == "Protein":
             protein = amount
+        elif name == "Total Sugars":
+            sugars = amount
 
     return {
         "calories": calories,
         "fat": fat,
         "carbohydrates": carbohydrates,
-        "protein": protein
+        "protein": protein,
+        "sugars": sugars
     }
