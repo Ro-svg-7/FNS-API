@@ -14,8 +14,8 @@ def change_ui():
     if get_metrics() == False:
         return
     
-    status_text.set("Showing nutrition data for: " + food_name.get().strip())
-    root.geometry("750x650")
+    status_text.set(food_name.get().strip())
+    root.geometry("950x550")
     input_frame.pack_forget()
     search_button.pack_forget()
     results_frame.pack(pady=20)
@@ -24,6 +24,7 @@ def change_ui():
 def change_ui_back():
     status_text.set("Please enter a food name to get nutrition data.")
     root.geometry("650x350")
+    food_name.delete(0, tk.END)
     input_frame.pack(pady=20)
     search_button.pack(pady=10)
     results_frame.pack_forget()
@@ -40,11 +41,11 @@ def get_metrics():
     nutrition_info = get_nutrition_info(food_item)
     if nutrition_info is not None:
         data_label.config(
-            text=f"NUTRITION DATA: \n"
-              f"Calories: {nutrition_info['calories']} kcal\n"
-              f"Carbohydrates: {nutrition_info['carbohydrates']} g\n"
-              f"Protein: {nutrition_info['protein']} g\n"
-              f"Fat: {nutrition_info['fat']} g"
+            text=f"{food_item.upper()}:\n\n"
+              f"{'Calories:':<15} {nutrition_info['calories']:.0f} kcal\n"
+              f"{'Carbohydrates:':<15} {nutrition_info['carbohydrates']:.1f} g\n"
+              f"{'Protein:':<15} {nutrition_info['protein']:.1f} g\n"
+              f"{'Fat:':<15}{nutrition_info['fat']:.1f} g"
               )
         return True
     else:
@@ -55,7 +56,7 @@ def get_metrics():
 title_label = tk.Label(
     root,
     text="Know Your Food Nutrition",
-    font=("Arial",30, "bold"),
+    font=("Segoe UI",30, "bold"),
     bg="#252625",
     fg="#F0ED36"
 )
@@ -64,7 +65,7 @@ title_label.pack(pady=20)
 status_label = tk.Label(
     root,
     textvariable=status_text,
-    font=("Arial", 16, "bold"),
+    font=("Segoe UI", 16, "bold"),
     bg="#252625",
     fg="white"
 )
@@ -77,14 +78,14 @@ input_frame.pack(pady=20)
 food_label= tk.Label(
     input_frame,
     text="Enter Food Name:",
-    font=("Arial", 24,"bold"),
+    font=("Segoe UI", 24,"bold"),
     bg="#252625",
     fg="white"
 )
 food_label.pack(side="left", pady=10)
 food_name = tk.Entry(
     input_frame,
-    font=("Arial", 24, "bold"),
+    font=("Segoe UI", 24, "bold"),
     bd=2,
     relief="groove",
     justify="center"
@@ -108,25 +109,32 @@ results_frame = tk.Frame(
 
 image_label = tk.Label(
     results_frame,
-    text="IMAGE PLACEHOLDER",
-    font=("Arial", 20, "bold"),
+    text="🍌",
+    font=("Arial", 80),
     bg="#252625",
     fg="white"
 )
 image_label.pack(side="left", pady=10)
 
-data_label = tk.Label(
+nutrition_frame = tk.Frame(
     results_frame,
-    text="NUTRITION DATA: \n" 
-    "- Calories: 200\n" 
-    "- Carbohydrates: 30g\n"  
-    "- Protein: 5g\n" 
-    "- Fat: 10g",
-    font=("Arial", 20, "bold"),
-    bg="#252625",   
-    fg="white"
+    bg="#333333",
+    padx=40,
+    pady=20,
+    bd=2,
+    relief="ridge"
 )
-data_label.pack(side="left", padx=20)
+nutrition_frame.pack(side="left", padx=20)
+
+data_label = tk.Label(
+    nutrition_frame,
+    text="NUTRITION DATA:",
+    font=("Consolas", 18, "bold"),
+    bg="#333333",   
+    fg="white",
+    justify="left"
+)
+data_label.pack()
 
 redo_button = tk.Button(
     root,
