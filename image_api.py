@@ -8,7 +8,7 @@ load_dotenv()
 def get_food_image(food_item):
 
     headers = {
-        "Authorization": os.getenv("PIXABY_API_KEY")
+        "Authorization": os.getenv("PEXELS_API_KEY")
     }
     SEARCH_URL = "https://api.pexels.com/v1/search"
 
@@ -17,7 +17,11 @@ def get_food_image(food_item):
         "per_page": 1
     }
 
-    response = requests.get(SEARCH_URL, headers=headers, params=params)
+    try:
+        response = requests.get(SEARCH_URL, headers=headers, params=params, timeout=10)
+    except requests.RequestException as e:
+        print(f"Error fetching image: {e}")
+        return None
 
     print(response.status_code)
     data = response.json()

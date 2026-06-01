@@ -11,7 +11,11 @@ API_KEY = os.getenv("API_KEY")
 
 def get_nutrition_info(food_item):
     SEARCH_URL = f"https://api.nal.usda.gov/fdc/v1/foods/search?api_key={API_KEY}&query={food_item}"
-    search_response = requests.get(SEARCH_URL)
+    try:
+        search_response = requests.get(SEARCH_URL, timeout=10)
+    except requests.RequestException as e:
+        print(f"Error fetching nutrition data: {e}")
+        return None
     if search_response.status_code != 200:
         print(f"Error: {search_response.status_code}")
         return None

@@ -7,10 +7,10 @@ A Tkinter-based desktop application that fetches:
 
 ## Features
 
-- Search foods
-- Display calories, protein, carbs, fat
-- Fetch food images
-- Dynamic Tkinter UI
+- Search nutrition information for foods
+- Fetch food images using Pexels API
+- Display calories, carbohydrates, protein, fat, and sugar
+- Tkinter desktop interface
 
 ## Tech Stack
 
@@ -20,6 +20,15 @@ A Tkinter-based desktop application that fetches:
 - Pillow
 - USDA API
 - Pexels API
+
+## Screenshots
+
+## Home Screen
+![Home Screen](screenshots/home.png)
+
+## Nutrition Results
+
+![Result Screen](screenshots/result.png)
 
 ## Setup
 
