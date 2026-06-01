@@ -1,5 +1,9 @@
 import tkinter as tk
 from nutrition_api import get_nutrition_info
+from image_api import get_food_image
+from io import BytesIO
+from PIL import Image, ImageTk
+import requests
 
 root = tk.Tk()
 root.title("Food Nutrition")
@@ -37,9 +41,19 @@ def get_metrics():
         status_text.set("Please enter a food name.")
         status_label.config(fg="red")
         return False
-
+    
     nutrition_info = get_nutrition_info(food_item)
     if nutrition_info is not None:
+
+        image_url = get_food_image(food_item)
+        if image_url:
+            response = requests.get(image_url)
+            img = Image.open(BytesIO(response.content))
+            img = img.resize((250, 250))
+            photo = ImageTk.PhotoImage(img)
+            image_label.config(image=photo, text="")
+            image_label.image = photo
+
         data_label.config(
             text=f"{food_item.upper()}:\n\n"
               f"{'Calories:':<15} {nutrition_info['calories']:.0f} kcal\n"
